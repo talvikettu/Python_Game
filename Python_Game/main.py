@@ -1,3 +1,4 @@
+from clouds import Clouds
 from map import Map
 from helicopter import Helicopter as Helicopter
 from pynput import keyboard
@@ -7,6 +8,7 @@ import os
 TICK_SLEEP = 0.05
 TREE_UPDATE = 50
 FIRE_UPDATE = 100
+CLOUDS_UPDATE = 30
 MAP_W, MAP_H = 20, 10
 
 def clear_console():
@@ -15,12 +17,7 @@ def clear_console():
 
 
 field = Map(MAP_W, MAP_H)
-field.generate_forest(3,10)
-field.generate_river(10)
-field.generate_river(10)
-field.generate_river(10)
-
-
+clouds = Clouds(MAP_W,MAP_H)
 helicopter = Helicopter(MAP_W,MAP_H)
 
 MOVES = {'w':(-1,0),'d':(0,1),'s':(1,0),'a':(0,-1)}
@@ -41,11 +38,14 @@ tick = 1
 while True:
     clear_console()
     print("TICK", tick)
+    field.process_helicopter(helicopter)
     helicopter.print_menu()
-    field.print_map(helicopter)
+    field.print_map(helicopter,clouds)
     tick +=1
     time.sleep(TICK_SLEEP)
-    if(tick % TREE_UPDATE == 0):
+    if( tick % TREE_UPDATE == 0):
         field.generate_tree()
-    if( tick% FIRE_UPDATE == 0):
+    if( tick % FIRE_UPDATE == 0):
         field.update_fires()
+    if( tick % CLOUDS_UPDATE == 0):
+        clouds.update()

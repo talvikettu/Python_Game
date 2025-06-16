@@ -8,8 +8,10 @@ class Helicopter:
         self.y = ry
         self.h = h
         self.w = w
-        self.tank = 0
-        self.mxtank = 1
+        self.tank = int(0)
+        self.mxtank = int(1)
+        self.score = int(0)
+        self.lives = 2
 
     def move(self,dx,dy):
         nx, ny = dx+self.x, dy + self.y
@@ -17,4 +19,6 @@ class Helicopter:
             self.x, self.y = nx,ny
 
     def print_menu(self):
-        print("TANK ", self.tank,"/", self.mxtank, sep="")
+        print("HEALTH ", self.lives, sep="", end=" | ")
+        print("TANK ", self.tank,"/", self.mxtank, sep="", end=" | ")
+        print("SCORE: ", self.score)
