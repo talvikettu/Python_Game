@@ -22,9 +22,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="clouds.py" />
-    <Compile Include="exporter.py" />
     <Compile Include="helicopter.py" />
-    <Compile Include="importer.py" />
     <Compile Include="main.py" />
     <Compile Include="map.py" />
     <Compile Include="utils.py" />

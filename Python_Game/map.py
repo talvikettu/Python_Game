@@ -10,7 +10,7 @@ from utils import randcell2
 # 4 - upgrade-shop
 # 5 - fire
 
-CELL_TYPES="🟩🌲🌊🏨🏪🔥"
+CELL_TYPES="🟩🌳🌊🏨🏪🔥"
 
 TREE_BONUS=int(10)
 
@@ -39,9 +39,9 @@ class Map:
             for ci in range(self.w):
                 cell = self.cells[ri][ci]
                 if(clouds.cells[ri][ci]==1):
-                    print("⬜",end="")
+                    print("⚪",end="")
                 elif (clouds.cells[ri][ci]==2):
-                    print("",end="")
+                    print("⭐",end="")
                 elif(helicopter.x == ri and helicopter.y == ci):
                     print("🚁",end="")
                 elif(cell>=0 and cell < len(CELL_TYPES)):
@@ -112,8 +112,9 @@ class Map:
         for i in range(10):
             self.generate_fire()
 
-    def process_helicopter(self, helicopter):
+    def process_helicopter(self, helicopter, clouds):
         c = self.cells[helicopter.x][helicopter.y]
+        d = clouds.cells[helicopter.x][helicopter.y]
         if(c==2):
             if helicopter.tank<helicopter.mxtank:
                 helicopter.tank +=1
@@ -128,5 +129,17 @@ class Map:
         if(c == 3 and helicopter.score >= LIFE_COST):
             helicopter.lives+=1
             helicopter.score -= LIFE_COST
+        if(c == 3 and helicopter.score >= LIFE_COST):
+            helicopter.lives+=20
+            helicopter.score -= LIFE_COST
+        if(d == 2):
+            helicopter.lives-=1
+            if helicopter.lives<=0:
+                print("GAME OVER! YOUR FINAL SCORE IS:", helicopter.score)
+                exit(0)
 
+    def export_data(self):
+        return {"cells": self.cells}
 
+    def import_data(self, data):
+        self.cells = data["cells"] or [[0 for i in range(self.w)]for j in range(self.h)]
